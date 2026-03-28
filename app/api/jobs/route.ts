@@ -10,7 +10,11 @@ export async function GET() {
 
 export const POST = mppx.charge({ amount: process.env.POST_FEE ?? '1.00' })(
   async (request: Request) => {
-    const body = await request.json()
+    const raw = await request.text()
+    const sanitized = raw.replace(/[\x00-\x1F\x7F]/g, (c) =>
+      ({ '\n': '\\n', '\r': '\\r', '\t': '\\t' })[c] ?? '',
+    )
+    const body = JSON.parse(sanitized)
     const { title, company, description, location, url, tags } = body
 
     if (!title || !company || !description) {
