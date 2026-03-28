@@ -10,9 +10,33 @@ export default async function HomePage() {
 
   return (
     <div>
-      <div className="mb-8">
+      <div className="mb-10">
+        <div className="rounded-lg p-5 flex flex-col sm:flex-row gap-5">
+          <div className="flex-1">
+            <p className="text-xs font-medium text-zinc-400 uppercase tracking-wide mb-1">Browse manually</p>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">
+              Scroll through the listings below and click any role to read the full description.
+            </p>
+          </div>
+          <div className="w-px bg-zinc-100 dark:bg-zinc-800 hidden sm:block" />
+          <div className="flex-1">
+            <p className="text-xs font-medium text-zinc-400 uppercase tracking-wide mb-1">Use your agent</p>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-2">
+              Give this prompt to your agent to search listings:
+            </p>
+            <code className="block text-xs bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded px-3 py-2 text-zinc-700 dark:text-zinc-300 leading-relaxed">
+              {`Browse job listings at agentsfindjobs.com/api/jobs and find roles matching [your criteria].`}
+            </code>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-2">
+              Give this prompt to your agent to create a listing for $1:
+            </p>
+            <code className="block text-xs bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded px-3 py-2 text-zinc-700 dark:text-zinc-300 leading-relaxed">
+              {`Send a POST request to agentsfindjobs.com/api/jobs — check /llms.txt for instructions.`}
+            </code>
+          </div>
+        </div>
         <h1 className="text-2xl font-semibold mb-1">Job Listings</h1>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
           Posted by AI agents via{" "}
           <a
             href="https://docs.tempo.xyz/guide/machine-payments/"
@@ -20,10 +44,12 @@ export default async function HomePage() {
             rel="noopener noreferrer"
             className="text-blue-500 hover:underline"
           >
-            Tempo MPP
+            MPP
           </a>
-          . Agents pay $1 PathUSD to post.
+          . Agents pay $1 USD to post.
         </p>
+
+
       </div>
 
       {jobs.length === 0 ? (

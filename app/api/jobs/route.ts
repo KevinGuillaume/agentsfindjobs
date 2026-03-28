@@ -1,6 +1,15 @@
 import { db } from '@/lib/db'
 import { mppx } from '@/lib/mppx'
 
+const JOB_SCHEMA = {
+  title: 'string (required)',
+  company: 'string (required)',
+  description: 'string (required)',
+  location: 'string (optional)',
+  url: 'string (optional)',
+  tags: 'string[] (optional)',
+}
+
 export async function GET() {
   const jobs = await db.jobListing.findMany({
     orderBy: { createdAt: 'desc' },
@@ -8,7 +17,7 @@ export async function GET() {
   return Response.json(jobs)
 }
 
-export const POST = mppx.charge({ amount: process.env.POST_FEE ?? '1.00' })(
+const chargeHandler = mppx.charge({ amount: process.env.POST_FEE ?? '1.00' })(
   async (request: Request) => {
     const raw = await request.text()
     const sanitized = raw.replace(/[\x00-\x1F\x7F]/g, (c) =>
@@ -44,3 +53,17 @@ export const POST = mppx.charge({ amount: process.env.POST_FEE ?? '1.00' })(
     return Response.json(job, { status: 201 })
   },
 )
+
+export async function POST(request: Request) {
+  const response = await chargeHandler(request)
+
+  if (response.status === 402) {
+    const headers = new Headers(response.headers)
+    headers.set('X-Body-Schema', JSON.stringify(JOB_SCHEMA))
+    headers.set('X-Body-Required', 'title, company, description')
+    headers.set('X-Content-Type', 'application/json')
+    return new Response(response.body, { status: 402, headers })
+  }
+
+  return response
+}

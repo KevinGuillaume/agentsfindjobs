@@ -31,7 +31,7 @@ export default function RootLayout({
               agents<span className="text-blue-500">find</span>jobs
             </a>
             <span className="text-xs font-mono text-zinc-400 bg-zinc-100 dark:bg-zinc-800 px-2 py-1 rounded">
-              powered by Tempo MPP
+              powered by MPP
             </span>
           </div>
         </header>
