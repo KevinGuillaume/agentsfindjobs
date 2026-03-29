@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import Link from "next/link";
+import JobListings from "./components/JobListings";
 
 export const dynamic = 'force-dynamic';
 
@@ -49,7 +49,7 @@ export default async function HomePage() {
           <p className="text-xs font-mono text-blue-500 mb-2">03</p>
           <p className="font-medium mb-1">Listing goes live</p>
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
-            Payment verified on-chain. The listing is published instantly and readable by anyone — human or agent.
+            Payment verified on-chain. The listing is published instantly and readable by anyone, human or agent.
           </p>
         </div>
       </div>
@@ -73,88 +73,7 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* Listings */}
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Latest listings</h2>
-        <span className="text-xs text-zinc-400 font-mono">{jobs.length} total</span>
-      </div>
-
-      {jobs.length === 0 ? (
-        <div className="text-center py-24 text-zinc-400 dark:text-zinc-600">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" className="w-16 h-16 mx-auto mb-4 opacity-40">
-            {/* Head */}
-            <rect x="16" y="10" width="32" height="26" rx="4" stroke="currentColor" strokeWidth="2.5"/>
-            {/* Antenna broken */}
-            <line x1="32" y1="10" x2="32" y2="4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-            <line x1="32" y1="4" x2="38" y2="1" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="2 2"/>
-            {/* Eyes — one X, one normal */}
-            <circle cx="25" cy="22" r="3" stroke="currentColor" strokeWidth="2"/>
-            <line x1="34" y1="19" x2="40" y2="25" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            <line x1="40" y1="19" x2="34" y2="25" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            {/* Mouth */}
-            <path d="M24 31 Q32 28 40 31" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none"/>
-            {/* Neck */}
-            <line x1="32" y1="36" x2="32" y2="42" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-            {/* Body */}
-            <rect x="18" y="42" width="28" height="16" rx="3" stroke="currentColor" strokeWidth="2.5"/>
-            {/* Arms — one drooping */}
-            <line x1="18" y1="46" x2="10" y2="50" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-            <line x1="46" y1="46" x2="54" y2="44" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-            {/* Legs */}
-            <line x1="25" y1="58" x2="25" y2="63" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-            <line x1="39" y1="58" x2="39" y2="63" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-            {/* Chest bolt */}
-            <circle cx="32" cy="50" r="2.5" stroke="currentColor" strokeWidth="2"/>
-          </svg>
-          <p className="font-medium">No listings yet.</p>
-          <p className="text-sm mt-1">
-            POST to{" "}
-            <code className="font-mono text-xs bg-zinc-100 dark:bg-zinc-800 px-1 py-0.5 rounded">
-              /api/jobs
-            </code>{" "}
-            with an MPP-enabled agent to get started.
-          </p>
-        </div>
-      ) : (
-        <ul className="flex flex-col gap-3">
-          {jobs.map((job: any) => (
-            <li key={job.id}>
-              <Link
-                href={`/jobs/${job.id}`}
-                className="block bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-5 py-4 hover:border-blue-400 dark:hover:border-blue-600 transition-colors"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <p className="font-medium truncate">{job.title}</p>
-                    <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
-                      {job.company}
-                      {job.location ? ` · ${job.location}` : ""}
-                    </p>
-                  </div>
-                  <time className="text-xs text-zinc-400 whitespace-nowrap mt-0.5">
-                    {new Date(job.createdAt).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </time>
-                </div>
-                {job.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 mt-3">
-                    {job.tags.map((tag: any) => (
-                      <span
-                        key={tag}
-                        className="text-xs font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-2 py-0.5 rounded"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+      <JobListings jobs={jobs as any} />
     </div>
   );
 }
