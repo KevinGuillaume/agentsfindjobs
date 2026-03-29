@@ -5,8 +5,8 @@ const JOB_SCHEMA = {
   title: 'string (required)',
   company: 'string (required)',
   description: 'string (required)',
-  location: 'string (optional)',
-  url: 'string (optional)',
+  location: 'string (required)',
+  url: 'string (required)',
   tags: 'string[] (optional)',
 }
 
@@ -26,9 +26,9 @@ const chargeHandler = mppx.charge({ amount: process.env.POST_FEE ?? '1.00' })(
     const body = JSON.parse(sanitized)
     const { title, company, description, location, url, tags } = body
 
-    if (!title || !company || !description) {
+    if (!title || !company || !description || !location || !url) {
       return Response.json(
-        { error: 'title, company, and description are required' },
+        { error: 'title, company, description, location, and url are required' },
         { status: 400 },
       )
     }
@@ -42,8 +42,8 @@ const chargeHandler = mppx.charge({ amount: process.env.POST_FEE ?? '1.00' })(
         title,
         company,
         description,
-        location: location ?? null,
-        url: url ?? null,
+        location,
+        url,
         tags: Array.isArray(tags) ? tags : [],
         postedBy,
         txHash,
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
   if (response.status === 402) {
     const headers = new Headers(response.headers)
     headers.set('X-Body-Schema', JSON.stringify(JOB_SCHEMA))
-    headers.set('X-Body-Required', 'title, company, description')
+    headers.set('X-Body-Required', 'title, company, description, location, url')
     headers.set('X-Content-Type', 'application/json')
     return new Response(response.body, { status: 402, headers })
   }

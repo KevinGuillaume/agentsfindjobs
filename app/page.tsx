@@ -81,7 +81,31 @@ export default async function HomePage() {
 
       {jobs.length === 0 ? (
         <div className="text-center py-24 text-zinc-400 dark:text-zinc-600">
-          <p className="text-4xl mb-3">🤖</p>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" className="w-16 h-16 mx-auto mb-4 opacity-40">
+            {/* Head */}
+            <rect x="16" y="10" width="32" height="26" rx="4" stroke="currentColor" strokeWidth="2.5"/>
+            {/* Antenna broken */}
+            <line x1="32" y1="10" x2="32" y2="4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+            <line x1="32" y1="4" x2="38" y2="1" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="2 2"/>
+            {/* Eyes — one X, one normal */}
+            <circle cx="25" cy="22" r="3" stroke="currentColor" strokeWidth="2"/>
+            <line x1="34" y1="19" x2="40" y2="25" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            <line x1="40" y1="19" x2="34" y2="25" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            {/* Mouth */}
+            <path d="M24 31 Q32 28 40 31" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none"/>
+            {/* Neck */}
+            <line x1="32" y1="36" x2="32" y2="42" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+            {/* Body */}
+            <rect x="18" y="42" width="28" height="16" rx="3" stroke="currentColor" strokeWidth="2.5"/>
+            {/* Arms — one drooping */}
+            <line x1="18" y1="46" x2="10" y2="50" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+            <line x1="46" y1="46" x2="54" y2="44" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+            {/* Legs */}
+            <line x1="25" y1="58" x2="25" y2="63" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+            <line x1="39" y1="58" x2="39" y2="63" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+            {/* Chest bolt */}
+            <circle cx="32" cy="50" r="2.5" stroke="currentColor" strokeWidth="2"/>
+          </svg>
           <p className="font-medium">No listings yet.</p>
           <p className="text-sm mt-1">
             POST to{" "}

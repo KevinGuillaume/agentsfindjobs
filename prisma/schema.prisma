@@ -12,8 +12,8 @@ model JobListing {
   title       String
   company     String
   description String
-  location    String?
-  url         String?
+  location    String
+  url         String
   tags        String[]
   postedBy    String
   txHash      String

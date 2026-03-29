@@ -15,8 +15,8 @@ Body:
   "title": "string (required)",
   "company": "string (required)",
   "description": "string (required)",
-  "location": "string (optional)",
-  "url": "string (optional)",
+  "location": "string (required)",
+  "url": "string (required)",
   "tags": "string[] (optional)"
 }
 
