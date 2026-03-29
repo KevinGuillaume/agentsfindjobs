@@ -1,5 +1,5 @@
 import { db } from '@/lib/db'
-import { mppx } from '@/lib/mppx'
+import { Mppx, tempo } from 'mppx/nextjs'
 
 const JOB_SCHEMA = {
   title: 'string (required)',
@@ -10,6 +10,8 @@ const JOB_SCHEMA = {
   tags: 'string[] (optional)',
 }
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   const jobs = await db.jobListing.findMany({
     orderBy: { createdAt: 'desc' },
@@ -17,45 +19,55 @@ export async function GET() {
   return Response.json(jobs)
 }
 
-const chargeHandler = mppx.charge({ amount: process.env.POST_FEE || '1.00' })(
-  async (request: Request) => {
-    const raw = await request.text()
-    const sanitized = raw.replace(/[\x00-\x1F\x7F]/g, (c) =>
-      ({ '\n': '\\n', '\r': '\\r', '\t': '\\t' })[c] ?? '',
-    )
-    const body = JSON.parse(sanitized)
-    const { title, company, description, location, url, tags } = body
-
-    if (!title || !company || !description || !location || !url) {
-      return Response.json(
-        { error: 'title, company, description, location, and url are required' },
-        { status: 400 },
-      )
-    }
-
-    const receipt = request.headers.get('Payment-Receipt') ?? ''
-    const txHash = receipt.split(';').find((p) => p.trim().startsWith('reference='))?.split('=')[1] ?? ''
-    const postedBy = receipt.split(';').find((p) => p.trim().startsWith('payer='))?.split('=')[1] ?? ''
-
-    const job = await db.jobListing.create({
-      data: {
-        title,
-        company,
-        description,
-        location,
-        url,
-        tags: Array.isArray(tags) ? tags : [],
-        postedBy,
-        txHash,
-      },
-    })
-
-    return Response.json(job, { status: 201 })
-  },
-)
-
 export async function POST(request: Request) {
-  const response = await chargeHandler(request)
+  const mppx = Mppx.create({
+    methods: [
+      tempo.charge({
+        currency: process.env.CURRENCY_ADDRESS as `0x${string}`,
+        recipient: process.env.RECIPIENT_ADDRESS as `0x${string}`,
+      }),
+    ],
+    realm: 'agentsfindjobs',
+  })
+
+  const handler = mppx.charge({ amount: process.env.POST_FEE || '1.00' })(
+    async (req: Request) => {
+      const raw = await req.text()
+      const sanitized = raw.replace(/[\x00-\x1F\x7F]/g, (c) =>
+        ({ '\n': '\\n', '\r': '\\r', '\t': '\\t' })[c] ?? '',
+      )
+      const body = JSON.parse(sanitized)
+      const { title, company, description, location, url, tags } = body
+
+      if (!title || !company || !description || !location || !url) {
+        return Response.json(
+          { error: 'title, company, description, location, and url are required' },
+          { status: 400 },
+        )
+      }
+
+      const receipt = req.headers.get('Payment-Receipt') ?? ''
+      const txHash = receipt.split(';').find((p) => p.trim().startsWith('reference='))?.split('=')[1] ?? ''
+      const postedBy = receipt.split(';').find((p) => p.trim().startsWith('payer='))?.split('=')[1] ?? ''
+
+      const job = await db.jobListing.create({
+        data: {
+          title,
+          company,
+          description,
+          location,
+          url,
+          tags: Array.isArray(tags) ? tags : [],
+          postedBy,
+          txHash,
+        },
+      })
+
+      return Response.json(job, { status: 201 })
+    },
+  )
+
+  const response = await handler(request)
 
   if (response.status === 402) {
     const headers = new Headers(response.headers)
