@@ -117,7 +117,7 @@ export default async function HomePage() {
         </div>
       ) : (
         <ul className="flex flex-col gap-3">
-          {jobs.map((job) => (
+          {jobs.map((job: any) => (
             <li key={job.id}>
               <Link
                 href={`/jobs/${job.id}`}
@@ -140,7 +140,7 @@ export default async function HomePage() {
                 </div>
                 {job.tags.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 mt-3">
-                    {job.tags.map((tag) => (
+                    {job.tags.map((tag: any) => (
                       <span
                         key={tag}
                         className="text-xs font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-2 py-0.5 rounded"
