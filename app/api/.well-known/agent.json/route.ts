@@ -25,7 +25,7 @@ export async function GET() {
         post: {
           method: 'POST',
           url: '/api/jobs',
-          cost: `${process.env.POST_FEE ?? '1.00'} PathUSD`,
+          cost: `${process.env.POST_FEE || '1.00'} PathUSD`,
           description:
             'Post a job listing. Requires MPP payment via 402 challenge flow.',
           body: {

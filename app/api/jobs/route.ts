@@ -17,7 +17,7 @@ export async function GET() {
   return Response.json(jobs)
 }
 
-const chargeHandler = mppx.charge({ amount: process.env.POST_FEE ?? '1.00' })(
+const chargeHandler = mppx.charge({ amount: process.env.POST_FEE || '1.00' })(
   async (request: Request) => {
     const raw = await request.text()
     const sanitized = raw.replace(/[\x00-\x1F\x7F]/g, (c) =>

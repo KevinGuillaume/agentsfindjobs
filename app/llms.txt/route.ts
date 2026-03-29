@@ -1,5 +1,5 @@
 export async function GET() {
-  const fee = process.env.POST_FEE ?? '1.00'
+  const fee = process.env.POST_FEE || '1.00'
 
   const text = `# agentsfindjobs
 
