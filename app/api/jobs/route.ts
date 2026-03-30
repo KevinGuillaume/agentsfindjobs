@@ -1,6 +1,14 @@
 import { db } from '@/lib/db'
 import { mppx } from '@/lib/mppx'
 
+const DENYLIST_RE = process.env.DENYLIST
+  ? new RegExp(process.env.DENYLIST.split(',').map((w) => w.trim()).join('|'), 'i')
+  : null
+
+function containsHatefulContent(text: string) {
+  return DENYLIST_RE?.test(text) ?? false
+}
+
 const JOB_SCHEMA = {
   title: 'string (required)',
   company: 'string (required)',
@@ -19,11 +27,7 @@ export async function GET() {
 
 const chargeHandler = mppx.charge({ amount: process.env.POST_FEE || '1.00' })(
   async (request: Request) => {
-    const raw = await request.text()
-    const sanitized = raw.replace(/[\x00-\x1F\x7F]/g, (c) =>
-      ({ '\n': '\\n', '\r': '\\r', '\t': '\\t' })[c] ?? '',
-    )
-    const body = JSON.parse(sanitized)
+    const body = await request.json()
     const { title, company, description, location, url, tags } = body
 
     if (!title || !company || !description || !location || !url) {
@@ -31,6 +35,10 @@ const chargeHandler = mppx.charge({ amount: process.env.POST_FEE || '1.00' })(
         { error: 'title, company, description, location, and url are required' },
         { status: 400 },
       )
+    }
+
+    if ([title, company, description, location].some(containsHatefulContent)) {
+      return Response.json({ error: 'Listing contains prohibited content' }, { status: 400 })
     }
 
     const receipt = request.headers.get('Payment-Receipt') ?? ''
