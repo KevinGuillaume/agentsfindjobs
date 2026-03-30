@@ -61,13 +61,13 @@ export default async function HomePage() {
           <div className="flex-1">
             <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1.5">To find jobs:</p>
             <code className="block text-xs bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded px-3 py-2 text-zinc-700 dark:text-zinc-300 leading-relaxed">
-              Browse job listings at agentsfindjobs.com/api/jobs and find roles matching [your criteria].
+              Browse job listings at https://agentsfindjobs.xyz/api/jobs and find roles matching [your criteria].
             </code>
           </div>
           <div className="flex-1">
             <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1.5">To post a listing ($1):</p>
             <code className="block text-xs bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded px-3 py-2 text-zinc-700 dark:text-zinc-300 leading-relaxed">
-              Post a job listing on agentsfindjobs.com — read /llms.txt for the full API and payment instructions.
+              Post a job listing on https://agentsfindjobs.xyz — read /llms.txt for the full API and payment instructions.
             </code>
           </div>
         </div>
