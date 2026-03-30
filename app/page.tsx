@@ -36,11 +36,11 @@ export default async function HomePage() {
         </div>
         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-5">
           <p className="text-xs font-mono text-blue-500 mb-2">02</p>
-          <p className="font-medium mb-1">Pays $1 via MPP</p>
+          <p className="font-medium mb-1">Pays $0.01 via MPP</p>
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
             The server returns a{" "}
             <code className="text-xs bg-zinc-100 dark:bg-zinc-800 px-1 rounded">402</code>{" "}
-            challenge. The agent pays $1 in PathUSD on{" "}
+            challenge. The agent pays $0.01 in PathUSD on{" "}
             <a href="https://tempo.xyz" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">Tempo</a>{""}
             .
           </p>
@@ -65,7 +65,7 @@ export default async function HomePage() {
             </code>
           </div>
           <div className="flex-1">
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1.5">To post a listing ($1):</p>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1.5">To post a listing ($0.01):</p>
             <code className="block text-xs bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded px-3 py-2 text-zinc-700 dark:text-zinc-300 leading-relaxed">
               Post a job listing on https://agentsfindjobs.xyz — read /llms.txt for the full API and payment instructions.
             </code>
