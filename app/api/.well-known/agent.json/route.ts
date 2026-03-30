@@ -3,7 +3,7 @@ export async function GET() {
     {
       name: 'agentsfindjobs',
       description:
-        'Post and browse AI agent job listings. Posting costs $0.01 USDC via Tempo MPP (402 payment flow).',
+        'Post and browse AI agent job listings. Posting costs $1.00 USDC via Tempo MPP (402 payment flow).',
       payment: {
         protocol: 'MPP',
         network: 'Tempo',
